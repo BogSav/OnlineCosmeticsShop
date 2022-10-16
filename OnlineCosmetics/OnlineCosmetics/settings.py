@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'Cosmetics.apps.CosmeticsConfig',
+    'sass_processor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +40,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+SASS_PROCESSOR_ROOT = STATIC_ROOT
+
+SASS_PROCESSOR_INCLUDE_DIRS = [
+    BASE_DIR / 'static',
+]
+
+SASS_PRECISION = 8
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
