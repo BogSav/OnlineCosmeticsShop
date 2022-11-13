@@ -1,0 +1,29 @@
+--
+-- Create model Adrese
+--
+CREATE TABLE `Cosmetics_adrese` (`AdresaID` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `Judet` varchar(45) NOT NULL);
+--
+-- Create model Comenzi
+--
+CREATE TABLE `Cosmetics_comenzi` (`ComenziID` integer AUTO_INCREMENT NOT NULL PRIMARY KEY);
+--
+-- Create model PozeProduse
+--
+CREATE TABLE `Cosmetics_pozeproduse` (`id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY);
+--
+-- Create model Produse
+--
+CREATE TABLE `Cosmetics_produse` (`id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY);
+--
+-- Create model ProduseComandate
+--
+CREATE TABLE `Cosmetics_produsecomandate` (`id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY);
+--
+-- Create model Reviews
+--
+CREATE TABLE `Cosmetics_reviews` (`id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY);
+--
+-- Create model Clienti
+--
+CREATE TABLE `Cosmetics_clienti` (`ClientID` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `Nume` varchar(45) NOT NULL, `Prenume` varchar(45) NOT NULL, `Email` varchar(50) NOT NULL, `StatusCont` varchar(30) NOT NULL, `DataNastere` date NULL, `DataCreareCont` date NOT NULL, `Gender` smallint NULL, `AdresaID` integer NULL);
+ALTER TABLE `Cosmetics_clienti` ADD CONSTRAINT `Cosmetics_clienti_AdresaID_ed46eb59_fk_Cosmetics_adrese_AdresaID` FOREIGN KEY (`AdresaID`) REFERENCES `Cosmetics_adrese` (`AdresaID`);

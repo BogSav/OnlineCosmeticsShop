@@ -1,5 +1,72 @@
+@function pxToRem($size) {
+    @return $size / 16 * 1rem;
+}
 
-$card-bg: #6ca06e56;
-$card-group-margin: 500px;
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white,  50%)) {
+    // For Google Chrome
+    &::-webkit-scrollbar {
+      border-radius: 10px;
+      width:  $size;
+      height: $size;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: $foreground-color;
+      border-radius: 10px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: $background-color;
+      border-radius: 10px;
+    }
+}
+
+// Variabile body
+$body-bg: #151515;
+
+// Variabile navbar 
+$nav-link-padding-y: pxToRem(30);
+$nav-link-padding-x: pxToRem(30);
+$nav-link-color: white;
+
+// Variabile carduri 
+$card-border-width: pxToRem(2);
+$card-border-color: #6f6f70e5;
+$card-bg: rgba(0, 0, 0, 0);
+$card-color: white;
 
 @import "../../bootstrap-5.0.2/scss/bootstrap";
+
+body {
+    @include scrollbars(10px, $card-border-color, black);
+  }
+
+#carduri{
+    margin-top: 20px;
+}
+
+.produs_title{
+    color: $card-color;
+    text-decoration: none;
+}
+
+.carousel-item {
+    height:250px;
+}
+
+.form-check-label{
+    color: white;
+}
+
+.form-label{
+    color: white;
+}
+
+.form-control{
+    background-color: #2125299a;
+    border: rgba(255, 255, 255, 0.61) solid 2px;
+}
+
+.carousel button{
+    background-color: $card-border-color !important;
+}

@@ -1,0 +1,45 @@
+{% load sass_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cosmetics</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="{% static 'bootstrap-5.0.2/dist/css/bootstrap.css' %}">
+        <script src="{% static 'bootstrap-5.0.2/dist/js/bootstrap.bundle.js' %}"></script>
+        
+		<link href="{% sass_src 'Cosmetics/css/main.scss' %}" rel="stylesheet" type="text/css" />
+	</head>
+
+
+	<ul class="nav justify-content-center" style="background-color: rgba(255, 255, 255, 0.062);">
+		<li class="nav-item">
+		  <a class="nav-link active" aria-current="page" href="./">Home page</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="./admin">Admin page</a>
+		</li>
+        {% if request.session.ClientID %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">{{ request.session.Nume }} {{ request.session.Prenume }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./logout">Log Out</a>
+            </li>
+        {% else %} 
+            <li class="nav-item">
+                <a class="nav-link" href="./login">Log In</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./register">Register</a>
+            </li>
+        {% endif %}
+	</ul>
+
+    {% block content %}
+    {% endblock content %}
+</html>

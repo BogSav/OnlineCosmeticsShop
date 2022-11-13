@@ -1,0 +1,54 @@
+{% extends 'Cosmetics/base.html' %}
+
+{% block content %}
+<body>
+    <div class="h-100 d-flex align-items-center justify-content-center" style="margin-top: 100px !important; margin-bottom: 100px !important;">
+        <h1 class="ms-1" style="padding-right: 30px !important;">LOG IN FORM</h1>
+        <form id="target">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required maxlength=50>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="mb-3" id="wronglogin">
+                <label class="form-label" style="color: red !important;">Check again your login informations</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function(){
+        "{% if request.session.ClientID %}"
+            window.location.href = "{% url 'index' %}";
+        "{% endif %}"
+
+        $("#wronglogin").hide();
+        $( "#target" ).submit(function( event ) {
+            event.preventDefault();
+            $.ajax({
+                url: "{% url 'login' %}",
+                type: "POST",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'email': $("#email").val(),
+                    'password': $('#password').val()
+                },
+                success: function (data) {
+                    alert ("Logarea a reusit!");
+                    window.location.href = "{% url 'index' %}";
+                },
+                error: function(data) {
+                    $("#wronglogin").text(data.statusText);
+                    $("#wronglogin").css({'color':'red'});
+                    $("#wronglogin").show();
+                }
+            })
+        });
+    });
+</script>
+{% endblock content %}
