@@ -82,11 +82,16 @@
                 type: "POST",
                 data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    'nume': $("#nume").val(),
-                    'prenume': $("#prenume").val(),
-                    'datanasterii': $("#birthdate").val(),
-                    'email': $("#email").val(),
-                    'password': $("#password").val(),
+                    'nume': 
+                        $("#nume").val(),
+                    'prenume': 
+                        $("#prenume").val(),
+                    'datanasterii': 
+                        $("#birthdate").val(),
+                    'email': 
+                        $("#email").val(),
+                    'password': 
+                        $("#password").val(),
                     'gender': 
                         $('#masculin').is(':checked') ? '1' : 
                             ($('#feminin').is(':checked') ? 
