@@ -1,20 +1,21 @@
-from django.shortcuts import render
-from json import dumps
-from django.core import serializers
-
-from django.http import HttpResponse, Http404, HttpResponseRedirect
-
-from django.db import connection
-
 from datetime import date
+from json import dumps
+
+from django.core import serializers
+from django.db import connection
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+
 
 def index(request):
+    order_by = "WHERE Status = 'Disponibil' ORDER BY Pret"
+
     with connection.cursor() as cursor:
         try:
             cursor.execute("SELECT ProdusID, Path FROM cosmetics_pozeproduse WHERE ProdusID IN (SELECT ProdusID FROM cosmetics_produse WHERE Status = 'Disponibil')")
             paths = cursor.fetchall()
 
-            cursor.execute("SELECT ProdusID, Denumire, Producator, Pret, Descriere FROM cosmetics_produse WHERE Status = 'Disponibil' ORDER BY Denumire")
+            cursor.execute("SELECT ProdusID, Denumire, Producator, Pret, Descriere FROM cosmetics_produse " + order_by)
             produse = cursor.fetchall()
         except Exception as e:
             raise Http404(str(e))
@@ -52,7 +53,7 @@ def registerPage(request):
         with connection.cursor() as cursor:
             try:
                 try:
-                    cursor.execute(f"SELECT * FROM cosmetic_clienti WHERE Email = {email}")
+                    cursor.execute(f"SELECT * FROM cosmetic_clienti WHERE Email = '{email}'")
                     cursor.fetchone()
                 except:
                     pass
@@ -119,3 +120,47 @@ def logout(request):
     del request.session['Prenume']
 
     return HttpResponseRedirect('/')
+
+def profile(request):
+    if 'ClientID' not in request.GET:
+        return HttpResponseRedirect('/')
+    elif 'ClientID' not in request.session:
+        return HttpResponseRedirect('/')
+    elif int(request.GET['ClientID']) != request.session['ClientID']:
+        return HttpResponseRedirect('/')
+
+    return render(request, 'Cosmetics/profile.html', {})
+
+def produs(request):
+    if is_ajax(request):
+        produsID = request.POST['ProdusID']
+        request.session['Cos'] = 2
+
+    produsID = request.GET['ProdusID']
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute(f"SELECT ProdusID, Denumire, Producator, Pret, Descriere FROM cosmetics_produse WHERE ProdusID = {produsID}")
+            produs = cursor.fetchone()
+            if produs == None:
+                raise Exception
+
+            cursor.execute(f"SELECT ProdusID, Path FROM cosmetics_pozeproduse WHERE ProdusID = {produsID}")
+            paths = cursor.fetchall()
+        except Exception as e:
+            return HttpResponseRedirect('/')
+        else:
+            paths = [x[1] for x in paths]
+            produs = {'ProdusId':produs[0], 'Denumire':produs[1], 'Producator':produs[2], 'Pret':produs[3], 'Descriere':produs[4]}
+        finally:
+            cursor.close()
+
+    produs = dumps(produs)
+    paths = dumps(paths)
+
+    context = {
+        'produs':produs,
+        'paths':paths
+        }
+
+
+    return render(request, 'Cosmetics/produs.html', context)

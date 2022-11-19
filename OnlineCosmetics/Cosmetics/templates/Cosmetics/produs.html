@@ -1,0 +1,61 @@
+{% extends 'Cosmetics/base.html' %}
+
+{% block content %}
+
+<body>
+    <div class="d-flex justify-content-left m-3">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade w-25 p-3" data-bs-ride="carousel">
+            <div class="carousel-inner" id = "inner">
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev" style="background-color: rgba(240, 248, 255, 0) !important;">
+                <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: rgb(61, 61, 61);"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next" style="background-color: rgba(240, 248, 255, 0) !important;">
+                <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: rgb(61, 61, 61);"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <div class="ms-5">
+            <h1 id="denumire" style="color: white;">{{request.session.cos}}</h1>
+            <div>
+                <button id="adaugaInCosButon">Adauga in cos</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+$(document).ready(function(){
+    let produs = JSON.parse("{{produs|escapejs}}");
+    let paths = JSON.parse("{{paths|escapejs}}");
+
+    paths.forEach((path, ind) => {
+        const child =  document.createElement('div');
+        child.setAttribute("class", "d-flex justify-content-center carousel-item" + (ind == 0 ? " active" : ""));
+        child.setAttribute("style", "height: 100% !important;")
+        child.innerHTML += `
+        <img src="${path}" class="d-block img-fluid" style="border-radius: 25px;">
+        `;
+        document.getElementById('inner').appendChild(child);
+    });
+    
+    $("#adaugaInCosButon").on('click', () => {
+        $.ajax({
+            url: "{% url 'produs' %}",
+            type: "POST",
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'ProdusID' : 2
+            },
+            success: function (data) {
+                alert("Produsul a fost adaugat in cos");
+            }
+        });
+    });
+
+    document.getElementById('denumire').innerText = produs.Denumire;
+});
+</script>
+
+{% endblock content %}
