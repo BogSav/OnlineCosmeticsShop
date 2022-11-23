@@ -25,6 +25,9 @@ class Clienti(models.Model):
     DataCreareCont = models.DateField()
     Gender = models.SmallIntegerField(default=1,blank=True,null=True)
 
+    def __str__(self):
+        return self.Nume + " " + self.Prenume
+
 class Comenzi(models.Model):
     class Meta:  
         verbose_name_plural = 'Comenzi'
@@ -83,3 +86,11 @@ class PozeProduse(models.Model):
 
     def __str__(self):
         return "Poza " + self.ProdusID.Denumire.lower()
+
+class ProduseInCos(models.Model):
+    class Meta:
+        verbose_name_plural = 'ProduseInCos'
+
+    ProdusInCosID = models.AutoField(primary_key=True)
+    ProdusID = ProdusID = models.ForeignKey(Produse, on_delete=models.DO_NOTHING, blank=True, null=True, to_field='ProdusID', db_column="ProdusID")
+    ClientID = models.ForeignKey(Clienti, on_delete=models.DO_NOTHING, blank=True, null=True, to_field='ClientID', db_column="ClientID")

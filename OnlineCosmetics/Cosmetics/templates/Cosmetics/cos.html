@@ -1,0 +1,89 @@
+{% extends 'Cosmetics/base.html' %}
+
+{% block content %}
+
+<body>
+    <div class="container-sm">
+        <div class="d-block" id="produse">
+        
+        </div>
+        <button type="button" class="btn btn-primary btn-sm mt-5" id="plaseazaComandaButton">Plaseaza comanda</button>
+    </div>
+</body>
+
+<script>
+    function createProdusDiv(produs){
+        let div = document.createElement('div');
+        div.setAttribute("class", "row justify-content-md-center mt-4");
+        div.innerHTML += 
+        `
+        <div style = "max-width: 200px; class = "col">
+            <img src="${produs.Path}" class = "img-fluid">
+        </div>
+        <div class = "col">
+            <h5 class="row"><a style="color: white; text-decoration: none;" href="./produs?ProdusID=${produs.ProdusID}">${produs.Denumire}</a></h5>
+            <div class = "row">
+                <h6 style="color: orange;">Aveti ${produs.Cantitate} produse in cos</h6>
+            </div>
+            <div class = "d-grid gap-2 d-md-block"> 
+                <button type="button" class="btn btn-secondary btn-sm" onClick="return modificaCantitate(${produs.ProdusID}, -1)" >Elimina produs</button>
+                <button type="button" class="btn btn-primary btn-sm" onClick="return modificaCantitate(${produs.ProdusID}, 1)" >Adauga produs</button>
+            </div>
+        <div>
+        `;
+
+        document.getElementById('produse').appendChild(div);
+    }
+
+    function modificaCantitate(ProdusID, actiune){
+        $.ajax({
+            url: "{% url 'modificaCantitateCos' %}",
+            type: "POST",
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'ProdusID' : ProdusID,
+                'Actiune' : actiune 
+            },
+            success: function (data) {
+                document.getElementById('produse').innerHTML = ``;
+                console.log(data);
+                data.produse.forEach(produs => {
+                    createProdusDiv(produs);
+                });
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    $(document).ready(()=>{
+        let produse = JSON.parse("{{produse|escapejs}}");
+
+        produse.forEach(produs => {
+            createProdusDiv(produs);
+        });
+
+        $("#plaseazaComandaButton").on("click", ()=>{
+            console.log(produse);
+            $.ajax({
+            url: "{% url 'comandaPOST' %}",
+            type: "POST",
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function (data) {
+                document.getElementById('produse').innerHTML = ``;
+                console.log(data);
+                data.produse.forEach(produs => {
+                    createProdusDiv(produs);
+                });
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+        });
+    });
+</script>
+{% endblock content %}

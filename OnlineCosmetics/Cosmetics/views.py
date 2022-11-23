@@ -1,9 +1,8 @@
 from datetime import date
 from json import dumps
 
-from django.core import serializers
 from django.db import connection
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 
 
@@ -12,7 +11,9 @@ def index(request):
 
     with connection.cursor() as cursor:
         try:
-            cursor.execute("SELECT ProdusID, Path FROM cosmetics_pozeproduse WHERE ProdusID IN (SELECT ProdusID FROM cosmetics_produse WHERE Status = 'Disponibil')")
+            cursor.execute("SELECT ProdusID, Path FROM cosmetics_pozeproduse "
+                "WHERE ProdusID IN (SELECT ProdusID FROM cosmetics_produse WHERE Status = 'Disponibil')"
+            )
             paths = cursor.fetchall()
 
             cursor.execute("SELECT ProdusID, Denumire, Producator, Pret, Descriere FROM cosmetics_produse " + order_by)
@@ -39,76 +40,9 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 def registerPage(request):
-    if is_ajax(request):
-        nume = request.POST['nume']
-        prenume = request.POST['prenume']
-        datanasterii = request.POST['datanasterii']
-        email = request.POST['email']
-        password = request.POST['password']
-        adresscheck = request.POST['adresscheck']
-        gender = request.POST['gender']
-
-        datacrearecont = date.today()
-
-        with connection.cursor() as cursor:
-            try:
-                try:
-                    cursor.execute(f"SELECT * FROM cosmetic_clienti WHERE Email = '{email}'")
-                    cursor.fetchone()
-                except:
-                    pass
-                else:
-                    raise Exception
-
-                cursor.execute("INSERT INTO cosmetics_clienti (Nume, Prenume, Email, Password, DataNastere, Gender, StatusCont, DataCreareCont)" 
-                    f"VALUES ('{nume}', '{prenume}', '{email}' , '{password}', '{datanasterii}', '{gender}', 'Activ', '{datacrearecont}')"
-                    )
-                
-                cursor.execute("SELECT LAST_INSERT_ID()")
-                client_id = cursor.fetchone()[0]
-
-                if adresscheck == 'true':
-                    judet = request.POST['judet']
-                    localitate = request.POST['localitate']
-                    adresa = request.POST['adresa']
-                    codpostal = request.POST['codpostal']
-
-                    cursor.execute("INSERT INTO cosmetics_adrese (Judet, Localitate, Adresa, CodPostal)"
-                        f"VALUES ('{judet}', '{localitate}', '{adresa}', '{codpostal}')"
-                        )
-                        
-                    cursor.execute(f"UPDATE cosmetics_clienti SET AdresaID = (SELECT LAST_INSERT_ID()) WHERE ClientID = '{client_id}'")
-            except Exception as e:
-                raise Http404(str(e))
-            else:
-                request.session['ClientID'] = client_id
-                request.session['Nume'] = nume
-                request.session['Prenume'] = prenume
-            finally:
-                cursor.close()
-
     return render(request, 'Cosmetics/register.html', {})
 
 def loginPage(request):
-    if is_ajax(request):
-        email = request.POST['email']
-        password = request.POST['password']
-
-        with connection.cursor() as cursor:
-            try:
-                cursor.execute(f"SELECT ClientID, Nume, Prenume FROM cosmetics_clienti WHERE Email = '{email}' AND Password = '{password}'")
-                client = cursor.fetchone()
-                if client == None:
-                    raise Exception
-            except Exception as e:
-                raise Http404(str(e))
-            else:
-                request.session['ClientID'] = client[0]
-                request.session['Nume'] = client[1]
-                request.session['Prenume'] = client[2]
-            finally:
-                cursor.close
-
     return render(request, 'Cosmetics/login.html')
 
 def logout(request):
@@ -132,10 +66,6 @@ def profile(request):
     return render(request, 'Cosmetics/profile.html', {})
 
 def produs(request):
-    if is_ajax(request):
-        produsID = request.POST['ProdusID']
-        request.session['Cos'] = 2
-
     produsID = request.GET['ProdusID']
     with connection.cursor() as cursor:
         try:
@@ -164,3 +94,39 @@ def produs(request):
 
 
     return render(request, 'Cosmetics/produs.html', context)
+
+def getProduseInCos(ClientID):
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("SELECT Denumire, COUNT(*), pozeproduse.Path, cosmetics_produseincos.ProdusID FROM cosmetics_produseincos " 
+                "INNER JOIN cosmetics_produse ON (cosmetics_produseincos.ProdusID = cosmetics_produse.ProdusID) "
+                "INNER JOIN (SELECT DISTINCT * FROM cosmetics_pozeproduse GROUP BY ProdusID) AS pozeproduse "
+                "ON (cosmetics_produse.ProdusID = pozeproduse.ProdusID) "
+                f"WHERE cosmetics_produseincos.ClientID = {ClientID} GROUP BY Denumire"
+                )
+
+            produse = cursor.fetchall()
+            produse = [{'Denumire' : x[0], 'Cantitate' : x[1], 'Path' : x[2], 'ProdusID': x[3]} for x in produse] 
+
+            return produse
+        except Exception as e:
+            return Http404(str(e))
+
+def cos(request):
+    ClientID = request.GET['ClientID']
+
+    if 'ClientID' not in request.GET:
+        return HttpResponseRedirect('/')
+    elif 'ClientID' not in request.session:
+        return HttpResponseRedirect('/')
+    elif int(ClientID) != request.session['ClientID']:
+        return HttpResponseRedirect('/')
+    
+    produse = getProduseInCos(ClientID)
+    produse = dumps(produse)
+
+    context = {
+        'produse' : produse
+    }
+
+    return render(request, 'Cosmetics/cos.html', context)

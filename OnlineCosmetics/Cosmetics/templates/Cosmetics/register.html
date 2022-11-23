@@ -22,12 +22,12 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" required maxlength=50>
             </div>
-            <div class="mb-3" id="wrongregister">
-                <label class="form-label" style="color: red !important;">Check again your login informations</label>
-            </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="mb-3" id="wrongregister">
+                <label class="form-label" style="color: red !important;"></label>
             </div>
             <!-- Elemente pentru formul de adresa -->
             <div class="form-check form-switch">
@@ -78,7 +78,7 @@
         $( "#target" ).submit(function( event ) {
             event.preventDefault();
             $.ajax({
-                url: "{% url 'register' %}",
+                url: "{% url 'registerPOST' %}",
                 type: "POST",
                 data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -108,13 +108,18 @@
                         $('#addadress').is(':checked') ? $("#codpostal").val() : null,
                 },
                 success: function (data) {
-                    alert ("Contul a fost creat cu succes!");
-                    window.location.href = "{% url 'index' %}";
+                    if(data.succes == 1){
+                        alert(data.resultText);
+                        window.location.href = "{% url 'index' %}";
+                    }
+                    else{
+                        $("#wrongregister").text(data.resultText);
+                        $("#wrongregister").css({'color':'red'});
+                        $("#wrongregister").show();
+                    }
                 },
                 error: function(data) {
-                    $("#wrongregister").text("User deja exista");
-                    $("#wrongregister").css({'color':'red'});
-                    $("#wrongregister").show();
+                    alert(data);
                 }
             })
         });
