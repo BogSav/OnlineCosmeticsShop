@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2022 at 12:27 PM
+-- Generation Time: Nov 23, 2022 at 09:47 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -113,7 +113,11 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (49, 'Can add reviews', 13, 'add_reviews'),
 (50, 'Can change reviews', 13, 'change_reviews'),
 (51, 'Can delete reviews', 13, 'delete_reviews'),
-(52, 'Can view reviews', 13, 'view_reviews');
+(52, 'Can view reviews', 13, 'view_reviews'),
+(53, 'Can add produse in cos', 14, 'add_produseincos'),
+(54, 'Can change produse in cos', 14, 'change_produseincos'),
+(55, 'Can delete produse in cos', 14, 'delete_produseincos'),
+(56, 'Can view produse in cos', 14, 'view_produseincos');
 
 -- --------------------------------------------------------
 
@@ -308,6 +312,25 @@ CREATE TABLE `cosmetics_produsecomandate` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cosmetics_produseincos`
+--
+
+CREATE TABLE `cosmetics_produseincos` (
+  `ProdusInCosID` int(11) NOT NULL,
+  `ClientID` int(11) DEFAULT NULL,
+  `ProdusID` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cosmetics_produseincos`
+--
+
+INSERT INTO `cosmetics_produseincos` (`ProdusInCosID`, `ClientID`, `ProdusID`) VALUES
+(3, 19, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cosmetics_reviews`
 --
 
@@ -457,6 +480,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (10, 'Cosmetics', 'pozeproduse'),
 (11, 'Cosmetics', 'produse'),
 (12, 'Cosmetics', 'produsecomandate'),
+(14, 'Cosmetics', 'produseincos'),
 (13, 'Cosmetics', 'reviews'),
 (6, 'sessions', 'session');
 
@@ -498,7 +522,8 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (18, 'sessions', '0001_initial', '2022-11-08 20:49:43.664596'),
 (37, 'Cosmetics', '0001_initial', '2022-11-09 20:59:53.633086'),
 (38, 'Cosmetics', '0002_clienti_password', '2022-11-12 20:10:02.955423'),
-(39, 'Cosmetics', '0003_alter_clienti_password', '2022-11-12 20:10:02.959436');
+(39, 'Cosmetics', '0003_alter_clienti_password', '2022-11-12 20:10:02.959436'),
+(40, 'Cosmetics', '0004_produseincos', '2022-11-23 20:45:17.084209');
 
 -- --------------------------------------------------------
 
@@ -517,7 +542,7 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('l2poi2b7ls90coqcgo0cl9v77nasico1', '.eJxVjMsOgjAQRf-la0LoCyhLdeNCY-IHkGmnAyi2CQ83xn8XIgvdnnPvebEa5qmt59EPdYesYpwlv8yCu_uwCrxBaGLqYpiGzqbrJN3smJ4i-n63bf8CLYzt-hZCKhQakLIyE1ZZWeSZgdJpIjIkPQJCQYrnqBF1DkCOUGpZmsJytUT3fefDdDywipuEneeHX7pXeMLiLoMPX7CLDUJg7w-nrEbn:1otz0i:VVfOJoweogHzovW-W6N_VaJqRn09DzqrpfS87OSaeuo', '2022-11-26 22:30:00.857072');
+('l2poi2b7ls90coqcgo0cl9v77nasico1', '.eJxVjDkOAjEQBP_iGFm-D0LyfcNq7PHgBWRLe0SIvyNLG0DaVdVvNsOx1_nYyjovyK5MssvvliA_SxsAH9Dunefe9nVJfCj8pBufOpbX7XT_DipsddRKaYPKApIIQiWTtHciQsiWiCLpgoDgyUiHFtE6AMqE2uoQfZKGfb76SjjE:1oxwdF:iglVNwihzWQoPs8nF1gtem-vEVjM9U2TOPDQk98Ctp4', '2022-12-07 20:46:09.923424');
 
 --
 -- Indexes for dumped tables
@@ -611,6 +636,14 @@ ALTER TABLE `cosmetics_produsecomandate`
   ADD KEY `Cosmetics_produsecom_ProdusID_62642d49_fk_Cosmetics` (`ProdusID`);
 
 --
+-- Indexes for table `cosmetics_produseincos`
+--
+ALTER TABLE `cosmetics_produseincos`
+  ADD PRIMARY KEY (`ProdusInCosID`),
+  ADD KEY `Cosmetics_produseinc_ClientID_720ce8f4_fk_Cosmetics` (`ClientID`),
+  ADD KEY `Cosmetics_produseinc_ProdusID_6d7c34b4_fk_Cosmetics` (`ProdusID`);
+
+--
 -- Indexes for table `cosmetics_reviews`
 --
 ALTER TABLE `cosmetics_reviews`
@@ -666,7 +699,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `auth_user`
@@ -723,6 +756,12 @@ ALTER TABLE `cosmetics_produsecomandate`
   MODIFY `ProdusComandatID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `cosmetics_produseincos`
+--
+ALTER TABLE `cosmetics_produseincos`
+  MODIFY `ProdusInCosID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `cosmetics_reviews`
 --
 ALTER TABLE `cosmetics_reviews`
@@ -738,13 +777,13 @@ ALTER TABLE `django_admin_log`
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Constraints for dumped tables
@@ -802,6 +841,13 @@ ALTER TABLE `cosmetics_pozeproduse`
 ALTER TABLE `cosmetics_produsecomandate`
   ADD CONSTRAINT `Cosmetics_produsecom_ComandaID_04b55de8_fk_Cosmetics` FOREIGN KEY (`ComandaID`) REFERENCES `cosmetics_comenzi` (`ComandaID`),
   ADD CONSTRAINT `Cosmetics_produsecom_ProdusID_62642d49_fk_Cosmetics` FOREIGN KEY (`ProdusID`) REFERENCES `cosmetics_produse` (`ProdusID`);
+
+--
+-- Constraints for table `cosmetics_produseincos`
+--
+ALTER TABLE `cosmetics_produseincos`
+  ADD CONSTRAINT `Cosmetics_produseinc_ClientID_720ce8f4_fk_Cosmetics` FOREIGN KEY (`ClientID`) REFERENCES `cosmetics_clienti` (`ClientID`),
+  ADD CONSTRAINT `Cosmetics_produseinc_ProdusID_6d7c34b4_fk_Cosmetics` FOREIGN KEY (`ProdusID`) REFERENCES `cosmetics_produse` (`ProdusID`);
 
 --
 -- Constraints for table `cosmetics_reviews`

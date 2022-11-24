@@ -17,7 +17,7 @@
             </button>
         </div>
         <div class="ms-5">
-            <h1 id="denumire" style="color: white;">{{request.session.cos}}</h1>
+            <h1 id="denumire" style="color: white;"></h1>
             <div>
                 <button id="adaugaInCosButon">Adauga in cos</button>
             </div>
@@ -34,22 +34,31 @@ $(document).ready(function(){
         const child =  document.createElement('div');
         child.setAttribute("class", "d-flex justify-content-center carousel-item" + (ind == 0 ? " active" : ""));
         child.setAttribute("style", "height: 100% !important;")
-        child.innerHTML += `
-        <img src="${path}" class="d-block img-fluid" style="border-radius: 25px;">
+        child.innerHTML += 
+        `
+            <img src="${path}" class="d-block img-fluid" style="border-radius: 25px;">
         `;
         document.getElementById('inner').appendChild(child);
     });
     
     $("#adaugaInCosButon").on('click', () => {
         $.ajax({
-            url: "{% url 'produs' %}",
+            url: "{% url 'produsInCosPOST' %}",
             type: "POST",
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'ProdusID' : 2
+                'ProdusId' : produs.ProdusId,
             },
             success: function (data) {
-                alert("Produsul a fost adaugat in cos");
+                if(data.succes == 1){
+                    alert("Produsul a fost adaugat");
+                }
+                else{
+                    alert("Cumva chestia asta a dat fail");
+                }
+            },
+            error: function(data) {
+                alert(data);
             }
         });
     });

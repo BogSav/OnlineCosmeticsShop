@@ -25,6 +25,9 @@
 		</li>
         {% if request.session.ClientID %}
             <li class="nav-item">
+                <a class="nav-link" href="./cos?ClientID={{ request.session.ClientID }}">Cos</a>
+            </li>    
+            <li class="nav-item">
                 <a class="nav-link" href="./profile?ClientID={{ request.session.ClientID }}">{{ request.session.Nume }} {{ request.session.Prenume }}</a>
             </li>
             <li class="nav-item">
