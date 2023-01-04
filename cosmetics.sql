@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2022 at 09:47 PM
+-- Generation Time: Jan 04, 2023 at 08:26 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -144,7 +144,7 @@ CREATE TABLE `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$390000$wl41hhIAi1rZyxiVCfdNuR$zL0SDy0+xQ0AKhzk2Syo6vrac60jzZ41JCS5m4OVxHc=', '2022-11-08 20:52:33.366759', 1, 'bogdan', '', '', 'bogdansava59@yahoo.com', 1, 1, '2022-11-08 20:52:17.415609');
+(1, 'pbkdf2_sha256$320000$2gMuKyLtx1Mr3EWukTCTDi$f5w44SImzR5/7IFrkF7t8ZLLk9pU1vzICalCnz6IMZ0=', '2022-12-28 13:50:35.530411', 1, 'bogdan', '', '', 'bogdansava59@yahoo.com', 1, 1, '2022-11-08 20:52:17.415609');
 
 -- --------------------------------------------------------
 
@@ -215,10 +215,7 @@ CREATE TABLE `cosmetics_clienti` (
 --
 
 INSERT INTO `cosmetics_clienti` (`ClientID`, `Nume`, `Prenume`, `Email`, `StatusCont`, `DataNastere`, `DataCreareCont`, `Gender`, `AdresaID`, `Password`) VALUES
-(15, 'Sava', 'Bogdan', 'bogdansava59@tahoo.com', 'Activ', '2022-11-23', '2022-11-13', 0, NULL, 'asdf'),
-(16, 'Sava', 'Bogdan', 'bogdansava59@tahoo.com', 'Activ', '2022-11-17', '2022-11-13', 0, NULL, 'asdf'),
-(17, 'Sava', 'Bogdan', 'bogdansava59@yahoo.com', 'Activ', '2022-11-23', '2022-11-13', 0, NULL, 'asdfasdf'),
-(19, 'Sava', 'Bogdan', 'bogdansava59@yahoo.com', 'Activ', '2022-11-22', '2022-11-13', 0, 14, 'root');
+(21, 'Sava', 'Bogdan', 'bogdansava59@yahoo.com', 'Activ', '2022-12-14', '2022-12-28', 0, NULL, 'root');
 
 -- --------------------------------------------------------
 
@@ -326,7 +323,12 @@ CREATE TABLE `cosmetics_produseincos` (
 --
 
 INSERT INTO `cosmetics_produseincos` (`ProdusInCosID`, `ClientID`, `ProdusID`) VALUES
-(3, 19, 3);
+(1, 21, 1),
+(2, 21, 1),
+(3, 21, 1),
+(4, 21, 1),
+(5, 21, 1),
+(6, 21, 1);
 
 -- --------------------------------------------------------
 
@@ -450,7 +452,13 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (82, '2022-11-12 22:24:58.592929', '18', 'Clienti object (18)', 3, '', 7, 1),
 (83, '2022-11-12 22:25:06.956185', '13', 'Adrese object (13)', 3, '', 8, 1),
 (84, '2022-11-12 22:25:06.958180', '12', 'Adrese object (12)', 3, '', 8, 1),
-(85, '2022-11-12 22:26:56.544177', '19', 'Clienti object (19)', 2, '[{\"changed\": {\"fields\": [\"Password\"]}}]', 7, 1);
+(85, '2022-11-12 22:26:56.544177', '19', 'Clienti object (19)', 2, '[{\"changed\": {\"fields\": [\"Password\"]}}]', 7, 1),
+(86, '2022-11-16 09:36:27.183538', '2', 'Ceara de par modelatoare', 2, '[]', 11, 1),
+(87, '2022-12-28 13:50:58.345638', '20', 'Sava Boigdan', 3, '', 7, 1),
+(88, '2022-12-28 13:50:58.350639', '19', 'Sava Bogdan', 3, '', 7, 1),
+(89, '2022-12-28 13:50:58.353175', '17', 'Sava Bogdan', 3, '', 7, 1),
+(90, '2022-12-28 13:50:58.354176', '16', 'Sava Bogdan', 3, '', 7, 1),
+(91, '2022-12-28 13:50:58.355175', '15', 'Sava Bogdan', 3, '', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -523,7 +531,7 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (37, 'Cosmetics', '0001_initial', '2022-11-09 20:59:53.633086'),
 (38, 'Cosmetics', '0002_clienti_password', '2022-11-12 20:10:02.955423'),
 (39, 'Cosmetics', '0003_alter_clienti_password', '2022-11-12 20:10:02.959436'),
-(40, 'Cosmetics', '0004_produseincos', '2022-11-23 20:45:17.084209');
+(40, 'Cosmetics', '0004_produseincos', '2022-12-28 14:01:24.707509');
 
 -- --------------------------------------------------------
 
@@ -542,7 +550,9 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('l2poi2b7ls90coqcgo0cl9v77nasico1', '.eJxVjDkOAjEQBP_iGFm-D0LyfcNq7PHgBWRLe0SIvyNLG0DaVdVvNsOx1_nYyjovyK5MssvvliA_SxsAH9Dunefe9nVJfCj8pBufOpbX7XT_DipsddRKaYPKApIIQiWTtHciQsiWiCLpgoDgyUiHFtE6AMqE2uoQfZKGfb76SjjE:1oxwdF:iglVNwihzWQoPs8nF1gtem-vEVjM9U2TOPDQk98Ctp4', '2022-12-07 20:46:09.923424');
+('l2poi2b7ls90coqcgo0cl9v77nasico1', '.eJxVjMsOgjAQRf-la0LoCyhLdeNCY-IHkGmnAyi2CQ83xn8XIgvdnnPvebEa5qmt59EPdYesYpwlv8yCu_uwCrxBaGLqYpiGzqbrJN3smJ4i-n63bf8CLYzt-hZCKhQakLIyE1ZZWeSZgdJpIjIkPQJCQYrnqBF1DkCOUGpZmsJytUT3fefDdDywipuEneeHX7pXeMLiLoMPX7CLDUJg7w-nrEbn:1otz0i:VVfOJoweogHzovW-W6N_VaJqRn09DzqrpfS87OSaeuo', '2022-11-26 22:30:00.857072'),
+('vg7jcvwuy6o1tsegjuq3stp9q12gwja4', '.eJxVjDsOwjAQBe_iGln-fyjpOYPltXdxADlSnFSIu0OkFNC-mXkvlvK2trQNXNJU2ZlJdvrdIJcH9h3Ue-63mZe5r8sEfFf4QQe_zhWfl8P9O2h5tG8tQEqNxVarYnbkQQUhonemRq8wSIE6aGcIfQEStihFULMlQdpbpwx7fwDOZTdy:1oy7FV:yLQP4qSVUYbtvVKqZ1VcR9IHLiY7FHtsHAVZCwDFNwo', '2022-12-08 08:06:21.462952'),
+('x6djgr4q114yo9zza4cl1rj12d0bkxls', '.eJxVjL0OwiAURt-FuSFAC7Qd1cVBY-IDNBe4tNUKSX9cjO8ujR10Pef7zos0sMxds0w4Nr0jNeEk-2UG7B3DKtwNQhupjWEee0PXCd3sRE_R4bDbtn-BDqYuvZnhPEcrnRQVKK-NKBmrtCpcpQWWnGFe5qrwqK3xTFohvHEgPfO5lkoUKbofegzz8UBqwTNyXh6Yuld4QnKXEcMX7GLrIJD3BzzFRY4:1pAX0b:SalcQNoi7Zmbo6wmIlltUfyRu17gDBipY4fYLpY-Y1s', '2023-01-11 14:02:17.538939');
 
 --
 -- Indexes for dumped tables
@@ -729,7 +739,7 @@ ALTER TABLE `cosmetics_adrese`
 -- AUTO_INCREMENT for table `cosmetics_clienti`
 --
 ALTER TABLE `cosmetics_clienti`
-  MODIFY `ClientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `ClientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_comenzi`
@@ -759,7 +769,7 @@ ALTER TABLE `cosmetics_produsecomandate`
 -- AUTO_INCREMENT for table `cosmetics_produseincos`
 --
 ALTER TABLE `cosmetics_produseincos`
-  MODIFY `ProdusInCosID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ProdusInCosID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_reviews`
@@ -771,7 +781,7 @@ ALTER TABLE `cosmetics_reviews`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`

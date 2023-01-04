@@ -32,9 +32,9 @@ def registerPOST(request):
         try:
             try:
                 cursor.execute(f"SELECT * FROM cosmetics_clienti WHERE Email = '{email}'")
-                client = cursor.fetchall()
+                client = cursor.rowcount
 
-                if client != None:
+                if client != 0:
                     data['resultText'] = "User deja exista boss"
                     data['succes'] = 0
                     return JsonResponse(data)
