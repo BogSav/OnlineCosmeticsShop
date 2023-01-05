@@ -3,9 +3,18 @@
 {% block content %}
 
 <body>
+    <div class="col">
     {% for x in comenzi %}
-        <h1>{{ x }}</h1>
+        <div class="row justify-content-md-center mt-4">
+            <h3 style="color: white;">Comanda de plasata pe data {{ x.1 }}</h3>
+            <h5 style="color: white;">Pretul comenzii a fost de {{ x.0 }} lei</h5>
+            <h5 style="color: white;">Statusul comenzii este: {{ x.3 }}</h5>
+            <h5 style="color: white;">Ati comandat {{ x.2 }} produse</h5>
+        </div>
+    {% empty %}
+        <h1>Nu exista comenzi plasate</h1>
     {% endfor %}
+    </div>
 </body>
 
 {% endblock content %}

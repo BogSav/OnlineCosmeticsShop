@@ -67,7 +67,14 @@ def profile(request):
 
     with connection.cursor() as cursor:
         try:
-            cursor.execute(f"SELECT ")
+            ClientID = request.session['ClientID']
+
+            cursor.execute("SELECT Pret, DataCreare, COUNT(*), Status FROM cosmetics_comenzi "
+            "INNER JOIN cosmetics_produsecomandate ON cosmetics_produsecomandate.ComandaID = cosmetics_comenzi.ComandaID "
+            f"WHERE ClientID = {ClientID} GROUP BY cosmetics_comenzi.ComandaID")
+
+            comenzi = cursor.fetchall()
+
         except Exception as e:
             raise Http404(str(e))
         finally:
