@@ -18,7 +18,7 @@ urlpatterns = [
     path('loginPOST', postRequests.loginPOST, name='loginPOST'),
 
     # Bullshit
-    path('produsInCosPOST', postRequests.addProdusInCos, name='produsInCosPOST'),
-    path('modificaCantitateCos', postRequests.modificaCantitateCos, name='modificaCantitateCos'),
-    path('comandaPOST', postRequests.comandaPOST, name='comandaPOST')
+    path('adaugaProdusPOST', postRequests.adaugaProdusPOST, name='adaugaProdusPOST'),
+    path('modificaCantitatePOST', postRequests.modificaCantitatePOST, name='modificaCantitatePOST'),
+    path('plaseazaComandaPOST', postRequests.plaseazaComandaPOST, name='plaseazaComandaPOST')
 ]

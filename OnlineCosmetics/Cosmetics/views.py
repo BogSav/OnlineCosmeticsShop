@@ -63,15 +63,28 @@ def profile(request):
     elif int(request.GET['ClientID']) != request.session['ClientID']:
         return HttpResponseRedirect('/')
 
-    return render(request, 'Cosmetics/profile.html', {})
+    comenzi = None
+
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute(f"SELECT ")
+        except Exception as e:
+            raise Http404(str(e))
+        finally:
+            cursor.close()
+
+    #comenzi = dumps(comenzi)
+
+    context = {'comenzi' : comenzi}
+
+    return render(request, 'Cosmetics/profile.html', context)
 
 def produs(request):
     produsID = request.GET['ProdusID']
     with connection.cursor() as cursor:
         try:
             cursor.execute(f"SELECT ProdusID, Denumire, Producator, Pret, Descriere FROM cosmetics_produse WHERE ProdusID = {produsID}")
-            produs = cursor.fetchone()
-            if produs == None:
+            if cursor.fetchone() == None:
                 raise Exception
 
             cursor.execute(f"SELECT ProdusID, Path FROM cosmetics_pozeproduse WHERE ProdusID = {produsID}")

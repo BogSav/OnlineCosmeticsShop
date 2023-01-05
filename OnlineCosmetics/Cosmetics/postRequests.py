@@ -116,7 +116,7 @@ def loginPOST(request):
 
     return JsonResponse(data)
 
-def addProdusInCos(request):
+def adaugaProdusPOST(request):
     if not is_ajax(request):
         raise Http404()
 
@@ -140,7 +140,7 @@ def addProdusInCos(request):
 
     return JsonResponse({'succes' : succes})
 
-def modificaCantitateCos(request):
+def modificaCantitatePOST(request):
     if not is_ajax(request):
         raise Http404()
 
@@ -156,12 +156,46 @@ def modificaCantitateCos(request):
                 cursor.execute(f"INSERT INTO cosmetics_produseincos (ProdusID, ClientID) VALUE ({ProdusID}, {ClientID})")
         except Exception as e:
             raise Http404(str(e))
+        finally:
+            cursor.close()
 
     return JsonResponse({'produse' : getProduseInCos(ClientID)})
 
-def comandaPOST(request):
+def plaseazaComandaPOST(request):
     if not is_ajax(request):
         raise Http404()
 
-    
-    pass
+    ClientID = request.session['ClientID']
+
+    succes = "Comanda a fost plasata cu succes"
+
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute(f"SELECT AdresaID FROM cosmetics_clienti WHERE ClientID = {ClientID} LIMIT 1")
+            if cursor.fetchone()[0] == None:
+                succes = "Nu exist o adresa, completati mai intai o adresa si reveniti"
+                return JsonResponse({'success' : succes})
+
+            cursor.execute("SELECT SUM(Pret) FROM cosmetics_produseincos "
+            "INNER JOIN cosmetics_produse ON cosmetics_produseincos.ProdusID = cosmetics_produse.ProdusID "
+            f"WHERE cosmetics_produseincos.ClientID = {ClientID}")
+
+            pret = cursor.fetchone()[0]
+
+            cursor.execute("INSERT INTO cosmetics_comenzi (ClientID, AdresaID, Pret, DataCreare, Status) "
+            f"VALUES ({ClientID}, (SELECT AdresaID FROM cosmetics_clienti WHERE ClientID = {ClientID} LIMIT 1), {pret}, CURDATE(), 'In curs de procesare')")
+
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            ComandaID = cursor.fetchone()[0]
+
+            cursor.execute("INSERT INTO cosmetics_produsecomandate (Cantitate, ProdusID, ComandaID) "
+            f"SELECT COUNT(*), ProdusID, {ComandaID} FROM cosmetics_produseincos WHERE cosmetics_produseincos.ClientID = {ClientID} GROUP BY ProdusID")
+
+            cursor.execute(f"DELETE FROM cosmetics_produseincos WHERE ClientID = {ClientID}")
+
+        except Exception as e:
+            raise Http404(str(e))
+        finally:
+            cursor.close()
+
+    return JsonResponse({'success' : succes})

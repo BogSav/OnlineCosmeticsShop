@@ -35,7 +35,7 @@ class Comenzi(models.Model):
     ComandaID = models.AutoField(primary_key=True)
     ClientID = models.ForeignKey(Clienti, on_delete=models.DO_NOTHING, blank=True, null=True, to_field='ClientID', db_column="ClientID")
     AdresaID = models.ForeignKey(Adrese, on_delete=models.DO_NOTHING, blank=True, null=True, to_field='AdresaID', db_column="AdresaID")
-    Pret = models.IntegerField()
+    Pret = models.FloatField()
     DataCreare = models.DateField()
     Status = models.CharField(max_length=30)
 

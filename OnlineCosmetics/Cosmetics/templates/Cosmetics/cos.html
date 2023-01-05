@@ -37,7 +37,7 @@
 
     function modificaCantitate(ProdusID, actiune){
         $.ajax({
-            url: "{% url 'modificaCantitateCos' %}",
+            url: "{% url 'modificaCantitatePOST' %}",
             type: "POST",
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -46,7 +46,7 @@
             },
             success: function (data) {
                 document.getElementById('produse').innerHTML = ``;
-                console.log(data);
+                //console.log(data);
                 data.produse.forEach(produs => {
                     createProdusDiv(produs);
                 });
@@ -65,25 +65,28 @@
         });
 
         $("#plaseazaComandaButton").on("click", ()=>{
-            console.log(produse);
             $.ajax({
-            url: "{% url 'comandaPOST' %}",
-            type: "POST",
-            data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-            },
-            success: function (data) {
-                document.getElementById('produse').innerHTML = ``;
-                console.log(data);
-                data.produse.forEach(produs => {
-                    createProdusDiv(produs);
-                });
-            },
-            error: function(data) {
-                alert(data);
-            }
-        });
+                url: "{% url 'plaseazaComandaPOST' %}",
+                type: "POST",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    if(data.success == 0){
+                        document.getElementById('produse').innerHTML = ``;
+                        document.getElementById('plaseazaComandaButton').innerHTML = ``;
+                        alert(data.success);
+                    }else{
+                        alert(data.success);
+
+                    }
+                },
+                error: function(data) {
+                    alert(data);
+                }
+            });
         });
     });
 </script>
+
 {% endblock content %}
