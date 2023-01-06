@@ -69,7 +69,7 @@ def profile(request):
         try:
             ClientID = request.session['ClientID']
 
-            cursor.execute("SELECT Pret, DataCreare, COUNT(*), Status FROM cosmetics_comenzi "
+            cursor.execute("SELECT Pret, DataCreare, SUM(cosmetics_produsecomandate.Cantitate), Status FROM cosmetics_comenzi "
             "INNER JOIN cosmetics_produsecomandate ON cosmetics_produsecomandate.ComandaID = cosmetics_comenzi.ComandaID "
             f"WHERE ClientID = {ClientID} GROUP BY cosmetics_comenzi.ComandaID")
 
@@ -91,7 +91,8 @@ def produs(request):
     with connection.cursor() as cursor:
         try:
             cursor.execute(f"SELECT ProdusID, Denumire, Producator, Pret, Descriere FROM cosmetics_produse WHERE ProdusID = {produsID}")
-            if cursor.fetchone() == None:
+            produs = cursor.fetchone()
+            if produs[0] == None:
                 raise Exception
 
             cursor.execute(f"SELECT ProdusID, Path FROM cosmetics_pozeproduse WHERE ProdusID = {produsID}")
