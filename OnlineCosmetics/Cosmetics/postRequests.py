@@ -199,3 +199,29 @@ def plaseazaComandaPOST(request):
             cursor.close()
 
     return JsonResponse({'success' : succes})
+
+def adaugaReviewPOST(request):
+    if not is_ajax(request):
+        raise Http404()
+
+    ClientID = request.session['ClientID']
+
+    Titlu = request.POST['titlu']
+    ProdusID = request.POST['ProdusId']
+    Continut = request.POST['content']
+    Nota = request.POST['nota']
+
+    succes = 0
+
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("INSERT INTO cosmetics_reviews (DataCrearii, Titlu, Content, Nota, ClientID, ProdusID) "
+            f"VALUES (CURDATE(), '{Titlu}', '{Continut}', {Nota}, {ClientID}, {ProdusID})")
+
+            succes = 1
+        except Exception as e:
+            raise Http404(str(e))
+        finally:
+            cursor.close()
+
+    return JsonResponse({'resultText' : "Review-ul a fost adaugat cu succes", 'succes' : succes})

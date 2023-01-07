@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2023 at 08:26 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Jan 07, 2023 at 03:20 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `auth_group` (
   `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -42,7 +42,7 @@ CREATE TABLE `auth_group_permissions` (
   `id` bigint(20) NOT NULL,
   `group_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -55,7 +55,7 @@ CREATE TABLE `auth_permission` (
   `name` varchar(255) NOT NULL,
   `content_type_id` int(11) NOT NULL,
   `codename` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `auth_permission`
@@ -137,14 +137,14 @@ CREATE TABLE `auth_user` (
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `date_joined` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `auth_user`
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$320000$2gMuKyLtx1Mr3EWukTCTDi$f5w44SImzR5/7IFrkF7t8ZLLk9pU1vzICalCnz6IMZ0=', '2022-12-28 13:50:35.530411', 1, 'bogdan', '', '', 'bogdansava59@yahoo.com', 1, 1, '2022-11-08 20:52:17.415609');
+(1, 'pbkdf2_sha256$390000$48QIAbaF8h3deuKDWGRIus$EGcr0E9v1l0CF0AtVoOu87dZd3mM2twSU4J32WuoARA=', '2023-01-06 09:03:03.747352', 1, 'bogdan', '', '', 'bogdansava59@yahoo.com', 1, 1, '2022-11-08 20:52:17.415609');
 
 -- --------------------------------------------------------
 
@@ -156,7 +156,7 @@ CREATE TABLE `auth_user_groups` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -168,7 +168,7 @@ CREATE TABLE `auth_user_user_permissions` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -182,7 +182,7 @@ CREATE TABLE `cosmetics_adrese` (
   `Localitate` varchar(30) NOT NULL,
   `Adresa` varchar(70) NOT NULL,
   `CodPostal` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cosmetics_adrese`
@@ -208,14 +208,14 @@ CREATE TABLE `cosmetics_clienti` (
   `Gender` smallint(6) DEFAULT NULL,
   `AdresaID` int(11) DEFAULT NULL,
   `Password` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cosmetics_clienti`
 --
 
 INSERT INTO `cosmetics_clienti` (`ClientID`, `Nume`, `Prenume`, `Email`, `StatusCont`, `DataNastere`, `DataCreareCont`, `Gender`, `AdresaID`, `Password`) VALUES
-(21, 'Sava', 'Bogdan', 'bogdansava59@yahoo.com', 'Activ', '2022-12-14', '2022-12-28', 0, NULL, 'root');
+(21, 'Sava', 'Bogdan', 'bogdansava59@yahoo.com', 'Activ', '2022-12-14', '2022-12-28', 0, 14, 'root');
 
 -- --------------------------------------------------------
 
@@ -230,7 +230,17 @@ CREATE TABLE `cosmetics_comenzi` (
   `Status` varchar(30) NOT NULL,
   `AdresaID` int(11) DEFAULT NULL,
   `ClientID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cosmetics_comenzi`
+--
+
+INSERT INTO `cosmetics_comenzi` (`ComandaID`, `Pret`, `DataCreare`, `Status`, `AdresaID`, `ClientID`) VALUES
+(1, 78, '2023-01-06', 'In curs de procesare', 14, 21),
+(2, 155, '2023-01-06', 'In curs de procesare', 14, 21),
+(3, 97, '2023-01-06', 'In curs de procesare', 14, 21),
+(4, 119, '2023-01-07', 'In curs de procesare', 14, 21);
 
 -- --------------------------------------------------------
 
@@ -242,7 +252,7 @@ CREATE TABLE `cosmetics_pozeproduse` (
   `PozaProdusID` int(11) NOT NULL,
   `Path` varchar(160) NOT NULL,
   `ProdusID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cosmetics_pozeproduse`
@@ -278,7 +288,7 @@ CREATE TABLE `cosmetics_produse` (
   `Pret` double DEFAULT NULL,
   `Cantitate` int(11) DEFAULT NULL,
   `Descriere` longtext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cosmetics_produse`
@@ -304,7 +314,20 @@ CREATE TABLE `cosmetics_produsecomandate` (
   `Cantitate` int(11) NOT NULL,
   `ComandaID` int(11) DEFAULT NULL,
   `ProdusID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cosmetics_produsecomandate`
+--
+
+INSERT INTO `cosmetics_produsecomandate` (`ProdusComandatID`, `Cantitate`, `ComandaID`, `ProdusID`) VALUES
+(1, 3, 1, 1),
+(2, 1, 1, 6),
+(4, 6, 2, 5),
+(5, 1, 3, 1),
+(6, 3, 3, 3),
+(7, 1, 3, 6),
+(8, 5, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -316,19 +339,16 @@ CREATE TABLE `cosmetics_produseincos` (
   `ProdusInCosID` int(11) NOT NULL,
   `ClientID` int(11) DEFAULT NULL,
   `ProdusID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cosmetics_produseincos`
 --
 
 INSERT INTO `cosmetics_produseincos` (`ProdusInCosID`, `ClientID`, `ProdusID`) VALUES
-(1, 21, 1),
-(2, 21, 1),
-(3, 21, 1),
-(4, 21, 1),
-(5, 21, 1),
-(6, 21, 1);
+(32, 21, 2),
+(33, 21, 2),
+(34, 21, 2);
 
 -- --------------------------------------------------------
 
@@ -344,7 +364,19 @@ CREATE TABLE `cosmetics_reviews` (
   `Nota` smallint(6) NOT NULL,
   `ClientID` int(11) DEFAULT NULL,
   `ProdusID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cosmetics_reviews`
+--
+
+INSERT INTO `cosmetics_reviews` (`ReviewID`, `DataCrearii`, `Titlu`, `Content`, `Nota`, `ClientID`, `ProdusID`) VALUES
+(3, '2023-01-07', 'Test', 'E bun rau', 10, 21, 2),
+(4, '2023-01-07', 'Ia sa vedem', 'Mda', 2, 21, 2),
+(5, '2023-01-07', 'Dezamagitor', 'RTelativ foarte prost', 1, 21, 7),
+(6, '2023-01-07', 'Ia sa vedem', 'asdf', 3, 21, 7),
+(7, '2023-01-07', 'Dezamagitor', 'sadfasdfasdfsadfasdfasdfasdfasfd', 2, 21, 7),
+(8, '2023-01-07', 'Se putea si mai bine', 'Nu am nimic de spus, titlu e suficient.', 9, 21, 3);
 
 -- --------------------------------------------------------
 
@@ -361,7 +393,7 @@ CREATE TABLE `django_admin_log` (
   `change_message` longtext NOT NULL,
   `content_type_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `django_admin_log`
@@ -458,7 +490,8 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (88, '2022-12-28 13:50:58.350639', '19', 'Sava Bogdan', 3, '', 7, 1),
 (89, '2022-12-28 13:50:58.353175', '17', 'Sava Bogdan', 3, '', 7, 1),
 (90, '2022-12-28 13:50:58.354176', '16', 'Sava Bogdan', 3, '', 7, 1),
-(91, '2022-12-28 13:50:58.355175', '15', 'Sava Bogdan', 3, '', 7, 1);
+(91, '2022-12-28 13:50:58.355175', '15', 'Sava Bogdan', 3, '', 7, 1),
+(92, '2023-01-06 09:03:13.036249', '21', 'Sava Bogdan', 2, '[{\"changed\": {\"fields\": [\"AdresaID\"]}}]', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -470,7 +503,7 @@ CREATE TABLE `django_content_type` (
   `id` int(11) NOT NULL,
   `app_label` varchar(100) NOT NULL,
   `model` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `django_content_type`
@@ -503,7 +536,7 @@ CREATE TABLE `django_migrations` (
   `app` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `django_migrations`
@@ -543,13 +576,14 @@ CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
   `expire_date` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `django_session`
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('8kykncccf2ur7mwbmafrifsoz1f83jqp', '.eJxVjMsOgjAURP-la9KALbeFJbpxoTHxA8htewsoloSHG-O_WyIbVpOcMzMfduw7CvP5xMpDlrDr8iJWsju-kSXsNlL4g2poHIaIalzmtl4mGuvORZHtmUH7pLAK98DQDNwOYR47w9cK3-zEL4Ojvtq6u4MWpzauvRVKamXAe6dkEVM4klI6i1Ib0EA6tTIFgyA8pN7Y3BZgwUgnUOXAvj_CWkaY:1pDicx:YNu8DWYTRm143J5DScMkEmPJjEAx0ewdd5_8bHUlTfk', '2023-01-20 09:03:03.748349'),
 ('l2poi2b7ls90coqcgo0cl9v77nasico1', '.eJxVjMsOgjAQRf-la0LoCyhLdeNCY-IHkGmnAyi2CQ83xn8XIgvdnnPvebEa5qmt59EPdYesYpwlv8yCu_uwCrxBaGLqYpiGzqbrJN3smJ4i-n63bf8CLYzt-hZCKhQakLIyE1ZZWeSZgdJpIjIkPQJCQYrnqBF1DkCOUGpZmsJytUT3fefDdDywipuEneeHX7pXeMLiLoMPX7CLDUJg7w-nrEbn:1otz0i:VVfOJoweogHzovW-W6N_VaJqRn09DzqrpfS87OSaeuo', '2022-11-26 22:30:00.857072'),
 ('vg7jcvwuy6o1tsegjuq3stp9q12gwja4', '.eJxVjDsOwjAQBe_iGln-fyjpOYPltXdxADlSnFSIu0OkFNC-mXkvlvK2trQNXNJU2ZlJdvrdIJcH9h3Ue-63mZe5r8sEfFf4QQe_zhWfl8P9O2h5tG8tQEqNxVarYnbkQQUhonemRq8wSIE6aGcIfQEStihFULMlQdpbpwx7fwDOZTdy:1oy7FV:yLQP4qSVUYbtvVKqZ1VcR9IHLiY7FHtsHAVZCwDFNwo', '2022-12-08 08:06:21.462952'),
 ('x6djgr4q114yo9zza4cl1rj12d0bkxls', '.eJxVjL0OwiAURt-FuSFAC7Qd1cVBY-IDNBe4tNUKSX9cjO8ujR10Pef7zos0sMxds0w4Nr0jNeEk-2UG7B3DKtwNQhupjWEee0PXCd3sRE_R4bDbtn-BDqYuvZnhPEcrnRQVKK-NKBmrtCpcpQWWnGFe5qrwqK3xTFohvHEgPfO5lkoUKbofegzz8UBqwTNyXh6Yuld4QnKXEcMX7GLrIJD3BzzFRY4:1pAX0b:SalcQNoi7Zmbo6wmIlltUfyRu17gDBipY4fYLpY-Y1s', '2023-01-11 14:02:17.538939');
@@ -745,7 +779,7 @@ ALTER TABLE `cosmetics_clienti`
 -- AUTO_INCREMENT for table `cosmetics_comenzi`
 --
 ALTER TABLE `cosmetics_comenzi`
-  MODIFY `ComandaID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ComandaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_pozeproduse`
@@ -763,25 +797,25 @@ ALTER TABLE `cosmetics_produse`
 -- AUTO_INCREMENT for table `cosmetics_produsecomandate`
 --
 ALTER TABLE `cosmetics_produsecomandate`
-  MODIFY `ProdusComandatID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ProdusComandatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_produseincos`
 --
 ALTER TABLE `cosmetics_produseincos`
-  MODIFY `ProdusInCosID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ProdusInCosID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_reviews`
 --
 ALTER TABLE `cosmetics_reviews`
-  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`

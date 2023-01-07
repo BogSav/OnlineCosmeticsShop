@@ -72,13 +72,12 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                 },
                 success: function (data) {
-                    if(data.success == 0){
+                    if(data.success == 1){
                         document.getElementById('produse').innerHTML = ``;
                         document.getElementById('plaseazaComandaButton').innerHTML = ``;
                         alert(data.success);
                     }else{
                         alert(data.success);
-
                     }
                 },
                 error: function(data) {

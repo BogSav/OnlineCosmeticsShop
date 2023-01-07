@@ -3,18 +3,41 @@
 {% block content %}
 
 <body>
-    <div class="col">
-    {% for x in comenzi %}
-        <div class="row justify-content-md-center mt-4">
-            <h3 style="color: white;">Comanda de plasata pe data {{ x.1 }}</h3>
-            <h5 style="color: white;">Pretul comenzii a fost de {{ x.0 }} lei</h5>
-            <h5 style="color: white;">Statusul comenzii este: {{ x.3 }}</h5>
-            <h5 style="color: white;">Ati comandat {{ x.2 }} produse</h5>
-        </div>
-    {% empty %}
-        <h1>Nu exista comenzi plasate</h1>
-    {% endfor %}
-    </div>
+    {% if comenzi %}
+        <div style="margin-left: 70px;">
+            <h3 style="color: white;">Comenzile efectuate</h3>
+            <div class="col">
+            {% for x in comenzi %}
+                <div class="row justify-content-md-center mt-4">
+                    <h4 style="color: white;">Comanda plasata pe data <span style="color: wheat;">{{ x.1 }}</span></h3>
+                    <h6 style="color: white;">Pretul comenzii a fost de: {{ x.0 }} lei</h6>
+                    <h6 style="color: white;">Statusul comenzii este: <span style="color: wheat;">{{ x.3 }}</span></h6>
+                    <h6 style="color: white;">Ati comandat {{ x.2 }} produse</h6>
+                </div>
+            {% empty %}
+                <h1>Nu exista comenzi plasate</h1>
+            {% endfor %}
+            </div>
+        </div>>
+    {% endif %}
+
+    {% if adreseComenzi %}
+        <div style="margin-left: 70px;">
+            <h3 style="color: white;">Adresele cu care ati efectuat comenzi</h3>
+            <div class="col">
+            {% for adrsea in adreseComenzi %}
+                <div class="row justify-content-md-center mt-4">
+                    <h6 style="color: white;">Judetul: <span style="color: wheat;">{{ adrsea.0 }}</span></h6>
+                    <h6 style="color: white;">Localitate: <span style="color: wheat;">{{ adrsea.1 }}</span></h6>
+                    <h6 style="color: white;">Adresa: <span style="color: wheat;">{{ adrsea.2 }}</span></h6>
+                    <h6 style="color: white;">Cod postal: <span style="color: wheat;">{{ adrsea.3 }}</span></h6>
+                </div>
+            {% empty %}
+                <h1>Nu exista adrese disponibile</h1>
+            {% endfor %}
+            </div>
+        </div>>
+    {% endif %}
 </body>
 
 {% endblock content %}

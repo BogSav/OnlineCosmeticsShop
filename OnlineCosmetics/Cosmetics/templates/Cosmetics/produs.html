@@ -18,13 +18,54 @@
         </div>
         <div class="ms-5">
             <h1 id="denumire" style="color: white;"></h1>
+            <p id="descriere" style="color: white;"></p>
+            <h6 id="pret" style="color: white;"></h6>
             {% if request.session.ClientID %}
-            <div>
-                <button id="adaugaInCosButon">Adauga in cos</button>
-            </div>
+                <div>
+                    <button id="adaugaInCosButon">Adauga in cos</button>
+                </div>
+                <h6 style="color: white;">Ati comandat <span style="color: wheat;">{{ sumatotala }}</span> produse de acest tip pana acum</h6>
             {% endif %}
+            <h6 style="color: white;">Produsul a fost comandat de {{ aparitiiInComenzi }} ori</h6>
         </div>
     </div>
+    {% if reviews %}
+        <div style="margin-left: 30px;">
+            <h1 style="color: white;">Reviews</h1>
+            <div class="col" style="margin-left: 30px !important; width: 400px;"></div>
+                {% for review in reviews %}
+                    <div class="row justify-content-md-center mt-4">
+                        <h3 style="color: paleturquoise;">{{ review.1 }}</h3>
+                        <h6 style="color: white;">Review redactat de catre <span style="color: wheat;">{{ review.4 }} {{ review.5 }}</span></h6>
+                        <h6 style="color: white;">Pe data de: <spane style="color: wheat;">{{ review.0 }}</spane></h6>
+                        <h6 style="color: white">Nota acordata: <spane style="color: wheat;">{{ review.3 }}</span></h6>
+                        <p style="color: white;">Opinia onesta a autorului: {{ review.2 }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    </div>
+    {% if request.session.ClientID %}
+        <div class="h-100" style="margin-left: 30px !important; width: 400px;">
+            <h1 style="color: white;">Adaugati un review</h1>
+            <form id="reviewform">
+                <div class="mb-3">
+                    <label for="titlu" class="form-label">Titlu</label>
+                    <input type="text" class="form-control" id="titlu" required maxlength=50 style="color: blueviolet;">
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">Continut</label>
+                    <textarea type="text" class="form-control" id="content" required maxlength=1000 style="color: blueviolet;"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="nota" class="form-label">Nota</label>
+                    <input type="number" class="form-control" id="nota" required style="color: blueviolet;" max=10 min=1>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    {% endif %}
 </body>
 
 <script>
@@ -65,7 +106,36 @@ $(document).ready(function(){
         });
     });
 
+    $( "#reviewform" ).submit(function( event ) {
+        event.preventDefault();
+        $.ajax({
+            url: "{% url 'adaugaReviewPOST' %}",
+            type: "POST",
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'ProdusId' : produs.ProdusId,
+                'titlu' : $('#titlu').val(),
+                'content': $('#content').val(),
+                'nota' : $('#nota').val()
+            },
+            success: function (data) {
+                if(data.succes == 1){
+                    alert(data.resultText);
+                    location.reload();
+                }
+                else{
+                    alert(data.resultText);
+                }
+            },
+            error: function(data) {
+                alert(data);
+            }
+        })
+        });
+
     document.getElementById('denumire').innerText = produs.Denumire;
+    document.getElementById('descriere').innerText = produs.Descriere;
+    document.getElementById('pret').innerText = "Pretul este: " + produs.Pret + " lei";
 });
 </script>
 

@@ -20,5 +20,6 @@ urlpatterns = [
     # Bullshit
     path('adaugaProdusPOST', postRequests.adaugaProdusPOST, name='adaugaProdusPOST'),
     path('modificaCantitatePOST', postRequests.modificaCantitatePOST, name='modificaCantitatePOST'),
-    path('plaseazaComandaPOST', postRequests.plaseazaComandaPOST, name='plaseazaComandaPOST')
+    path('plaseazaComandaPOST', postRequests.plaseazaComandaPOST, name='plaseazaComandaPOST'),
+    path('adaugaReviewPOST', postRequests.adaugaReviewPOST, name='adaugaReviewPOST')
 ]

@@ -18,6 +18,37 @@ def index(request):
 
             cursor.execute("SELECT ProdusID, Denumire, Producator, Pret, Descriere FROM cosmetics_produse " + order_by)
             produse = cursor.fetchall()
+
+            cursor.execute("SELECT COUNT(*) FROM (SELECT cosmetics_produsecomandate.ProdusID FROM cosmetics_comenzi "
+                    "INNER JOIN cosmetics_produsecomandate ON cosmetics_produsecomandate.ComandaID = cosmetics_comenzi.ComandaID "
+                    "INNER JOIN (SELECT ProdusID, COUNT(*) as NrPoze FROM cosmetics_pozeproduse GROUP BY ProdusID) AS pozeproduse "
+                    "ON pozeproduse.ProdusID = cosmetics_produsecomandate.ProdusID "
+                    "WHERE pozeproduse.NrPoze > 0 GROUP BY cosmetics_produsecomandate.ProdusID HAVING COUNT(cosmetics_comenzi.ComandaID) > 1) as test")
+            numarProdusePozeVSNrComenzi = cursor.fetchone()[0]
+
+            cursor.execute("SELECT COUNT(*) FROM (SELECT cosmetics_produse.ProdusID, AVG(cosmetics_reviews.Nota) as NotaMedie FROM cosmetics_produse "
+                    "INNER JOIN cosmetics_reviews ON cosmetics_reviews.ProdusID = cosmetics_produse.ProdusID "
+                    "GROUP BY cosmetics_produse.ProdusID HAVING AVG(cosmetics_reviews.Nota) > 2) as NoteReview "
+                    "INNER JOIN "
+                    "(SELECT cosmetics_produse.ProdusID, COUNT(cosmetics_produse.ProdusID) FROM cosmetics_produse "
+                    "INNER JOIN cosmetics_reviews ON cosmetics_reviews.ProdusID = cosmetics_produse.ProdusID "
+                    "GROUP BY cosmetics_produse.ProdusID HAVING COUNT(cosmetics_produse.ProdusID) > 1) as TotalReviews  "
+                    "ON TotalReviews.ProdusID = NoteReview.ProdusID")
+            numarProduseMedieVSNrReview = cursor.fetchone()[0]
+
+            cursor.execute("SELECT produselecomandate.Nume, produselecomandate.Prenume FROM "
+                    "(SELECT cosmetics_clienti.Nume, cosmetics_clienti.Prenume, cosmetics_clienti.ClientID, cosmetics_produsecomandate.ProdusID "
+                    "FROM cosmetics_clienti "
+                    "INNER JOIN cosmetics_comenzi ON cosmetics_clienti.ClientID = cosmetics_comenzi.ClientID "
+                    "INNER JOIN cosmetics_produsecomandate ON cosmetics_produsecomandate.ComandaID = cosmetics_comenzi.ComandaID "
+                    "GROUP BY cosmetics_clienti.ClientID, cosmetics_produsecomandate.ProdusID) as produselecomandate "
+                    "INNER JOIN "
+                    "(SELECT cosmetics_clienti.ClientID, cosmetics_reviews.ProdusID FROM cosmetics_clienti "
+                    "INNER JOIN cosmetics_reviews ON cosmetics_clienti.ClientID = cosmetics_clienti.ClientID "
+                    "GROUP BY cosmetics_reviews.ProdusID) as comenturi "
+                    "ON produselecomandate.ProdusID = comenturi.ProdusID")
+            clientii = cursor.fetchall()
+            
         except Exception as e:
             raise Http404(str(e))
         else:
@@ -31,7 +62,10 @@ def index(request):
 
     context = {
         'produse':produse,
-        'paths':paths
+        'paths':paths,
+        'numarProdusePozeVSNrComenzi':numarProdusePozeVSNrComenzi,
+        'numarProduseMedieVSNrReview':numarProduseMedieVSNrReview,
+        'clientii':clientii
         }
 
     return render(request, 'Cosmetics/index.html', context)
@@ -70,10 +104,14 @@ def profile(request):
             ClientID = request.session['ClientID']
 
             cursor.execute("SELECT Pret, DataCreare, SUM(cosmetics_produsecomandate.Cantitate), Status FROM cosmetics_comenzi "
-            "INNER JOIN cosmetics_produsecomandate ON cosmetics_produsecomandate.ComandaID = cosmetics_comenzi.ComandaID "
-            f"WHERE ClientID = {ClientID} GROUP BY cosmetics_comenzi.ComandaID")
-
+                    "INNER JOIN cosmetics_produsecomandate ON cosmetics_produsecomandate.ComandaID = cosmetics_comenzi.ComandaID "
+                    f"WHERE ClientID = {ClientID} GROUP BY cosmetics_comenzi.ComandaID")
             comenzi = cursor.fetchall()
+
+            cursor.execute("SELECT Judet, Localitate, Adresa, CodPostal FROM cosmetics_comenzi "
+                    "INNER JOIN cosmetics_adrese on cosmetics_comenzi.AdresaID = cosmetics_adrese.AdresaID "
+                    f"WHERE cosmetics_comenzi.ClientID = {ClientID} GROUP BY cosmetics_comenzi.AdresaID")
+            adreseComenzi = cursor.fetchall()
 
         except Exception as e:
             raise Http404(str(e))
@@ -82,12 +120,16 @@ def profile(request):
 
     #comenzi = dumps(comenzi)
 
-    context = {'comenzi' : comenzi}
+    context = {
+                'comenzi' : comenzi,
+                'adreseComenzi' : adreseComenzi}
 
     return render(request, 'Cosmetics/profile.html', context)
 
 def produs(request):
     produsID = request.GET['ProdusID']
+    ClientID = request.session['ClientID']
+
     with connection.cursor() as cursor:
         try:
             cursor.execute(f"SELECT ProdusID, Denumire, Producator, Pret, Descriere FROM cosmetics_produse WHERE ProdusID = {produsID}")
@@ -97,6 +139,22 @@ def produs(request):
 
             cursor.execute(f"SELECT ProdusID, Path FROM cosmetics_pozeproduse WHERE ProdusID = {produsID}")
             paths = cursor.fetchall()
+
+            cursor.execute("SELECT DataCrearii, Titlu, Content, Nota, cosmetics_clienti.Nume, cosmetics_clienti.Prenume FROM cosmetics_reviews "
+                    "INNER JOIN cosmetics_clienti ON cosmetics_clienti.ClientID = cosmetics_reviews.ClientID " 
+                    f"WHERE ProdusID = {produsID}")
+            reviews = cursor.fetchall()
+
+            cursor.execute("SELECT SUM(cosmetics_produsecomandate.Cantitate) FROM cosmetics_comenzi "
+                    "INNER JOIN cosmetics_produsecomandate ON (cosmetics_comenzi.ComandaID = cosmetics_produsecomandate.ComandaID) "
+                    f"WHERE cosmetics_comenzi.ClientID = {ClientID} AND cosmetics_produsecomandate.ProdusID = {produsID}")
+            sumatotala = cursor.fetchone()[0]
+
+            cursor.execute("SELECT COUNT(*) FROM cosmetics_comenzi "
+                    "INNER JOIN cosmetics_produsecomandate ON cosmetics_produsecomandate.ComandaID = cosmetics_comenzi.ComandaID "
+                    f"WHERE cosmetics_produsecomandate.ProdusID = {produsID}")
+            aparitiiInComenzi = cursor.fetchone()[0]
+
         except Exception as e:
             return HttpResponseRedirect('/')
         else:
@@ -110,7 +168,10 @@ def produs(request):
 
     context = {
         'produs':produs,
-        'paths':paths
+        'paths':paths,
+        'reviews':reviews,
+        'sumatotala':sumatotala,
+        'aparitiiInComenzi':aparitiiInComenzi
         }
 
 
