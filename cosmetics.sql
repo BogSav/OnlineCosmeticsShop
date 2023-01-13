@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2023 at 03:20 PM
+-- Generation Time: Jan 13, 2023 at 10:00 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -189,7 +189,8 @@ CREATE TABLE `cosmetics_adrese` (
 --
 
 INSERT INTO `cosmetics_adrese` (`AdresaID`, `Judet`, `Localitate`, `Adresa`, `CodPostal`) VALUES
-(14, 'Calarasi', 'Calarasi', 'B-dul. Nicolae TYitulescu', '910094');
+(14, 'Calarasi', 'Calarasi', 'B-dul. Nicolae TYitulescu', '910094'),
+(15, 'Calarasi', 'Calarasi', 'B-dul. Nicolae TYitulescu', '910094');
 
 -- --------------------------------------------------------
 
@@ -215,7 +216,8 @@ CREATE TABLE `cosmetics_clienti` (
 --
 
 INSERT INTO `cosmetics_clienti` (`ClientID`, `Nume`, `Prenume`, `Email`, `StatusCont`, `DataNastere`, `DataCreareCont`, `Gender`, `AdresaID`, `Password`) VALUES
-(21, 'Sava', 'Bogdan', 'bogdansava59@yahoo.com', 'Activ', '2022-12-14', '2022-12-28', 0, 14, 'root');
+(21, 'Sava', 'Bogdan', 'bogdansava59@yahoo.com', 'Activ', '2022-12-14', '2022-12-28', 0, 14, 'root'),
+(22, 'Afroditu', 'Gizas', 'bogdansava17@gmail.com', 'Activ', '2023-01-12', '2023-01-07', 1, 15, 'root');
 
 -- --------------------------------------------------------
 
@@ -240,7 +242,8 @@ INSERT INTO `cosmetics_comenzi` (`ComandaID`, `Pret`, `DataCreare`, `Status`, `A
 (1, 78, '2023-01-06', 'In curs de procesare', 14, 21),
 (2, 155, '2023-01-06', 'In curs de procesare', 14, 21),
 (3, 97, '2023-01-06', 'In curs de procesare', 14, 21),
-(4, 119, '2023-01-07', 'In curs de procesare', 14, 21);
+(4, 119, '2023-01-07', 'In curs de procesare', 14, 21),
+(5, 22, '2023-01-07', 'In curs de procesare', 15, 22);
 
 -- --------------------------------------------------------
 
@@ -327,7 +330,8 @@ INSERT INTO `cosmetics_produsecomandate` (`ProdusComandatID`, `Cantitate`, `Coma
 (5, 1, 3, 1),
 (6, 3, 3, 3),
 (7, 1, 3, 6),
-(8, 5, 4, 1);
+(8, 5, 4, 1),
+(9, 1, 5, 3);
 
 -- --------------------------------------------------------
 
@@ -348,7 +352,8 @@ CREATE TABLE `cosmetics_produseincos` (
 INSERT INTO `cosmetics_produseincos` (`ProdusInCosID`, `ClientID`, `ProdusID`) VALUES
 (32, 21, 2),
 (33, 21, 2),
-(34, 21, 2);
+(34, 21, 2),
+(36, 22, 3);
 
 -- --------------------------------------------------------
 
@@ -376,7 +381,8 @@ INSERT INTO `cosmetics_reviews` (`ReviewID`, `DataCrearii`, `Titlu`, `Content`, 
 (5, '2023-01-07', 'Dezamagitor', 'RTelativ foarte prost', 1, 21, 7),
 (6, '2023-01-07', 'Ia sa vedem', 'asdf', 3, 21, 7),
 (7, '2023-01-07', 'Dezamagitor', 'sadfasdfasdfsadfasdfasdfasdfasfd', 2, 21, 7),
-(8, '2023-01-07', 'Se putea si mai bine', 'Nu am nimic de spus, titlu e suficient.', 9, 21, 3);
+(8, '2023-01-07', 'Se putea si mai bine', 'Nu am nimic de spus, titlu e suficient.', 9, 21, 3),
+(9, '2023-01-07', 'De acord', 'Asa cu  zice si titlul sunt de acord cu ce este scris mai sus', 10, 22, 3);
 
 -- --------------------------------------------------------
 
@@ -583,7 +589,7 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('8kykncccf2ur7mwbmafrifsoz1f83jqp', '.eJxVjMsOgjAURP-la9KALbeFJbpxoTHxA8htewsoloSHG-O_WyIbVpOcMzMfduw7CvP5xMpDlrDr8iJWsju-kSXsNlL4g2poHIaIalzmtl4mGuvORZHtmUH7pLAK98DQDNwOYR47w9cK3-zEL4Ojvtq6u4MWpzauvRVKamXAe6dkEVM4klI6i1Ib0EA6tTIFgyA8pN7Y3BZgwUgnUOXAvj_CWkaY:1pDicx:YNu8DWYTRm143J5DScMkEmPJjEAx0ewdd5_8bHUlTfk', '2023-01-20 09:03:03.748349'),
+('8kykncccf2ur7mwbmafrifsoz1f83jqp', '.eJxVjDsOwjAQRO_iGllG3qwdSnrOYO3HxgGUSHFSIe5OIqWAaqR5b-ZtEq1LTWvLcxrUXMzZnH47JnnmcQf6oPE-WZnGZR7Y7oo9aLO3SfPrerh_B5Va3dZFfIAYGEvRAP2WXjMAqBBExog5OgGHTOgLusLSSY-CDOopdGg-X_28OHw:1pEBtY:hQM4qIZfWRFdwmuDQOAxND9YT5zjiG1q-Oe5mO9ogSw', '2023-01-21 16:18:08.055555'),
 ('l2poi2b7ls90coqcgo0cl9v77nasico1', '.eJxVjMsOgjAQRf-la0LoCyhLdeNCY-IHkGmnAyi2CQ83xn8XIgvdnnPvebEa5qmt59EPdYesYpwlv8yCu_uwCrxBaGLqYpiGzqbrJN3smJ4i-n63bf8CLYzt-hZCKhQakLIyE1ZZWeSZgdJpIjIkPQJCQYrnqBF1DkCOUGpZmsJytUT3fefDdDywipuEneeHX7pXeMLiLoMPX7CLDUJg7w-nrEbn:1otz0i:VVfOJoweogHzovW-W6N_VaJqRn09DzqrpfS87OSaeuo', '2022-11-26 22:30:00.857072'),
 ('vg7jcvwuy6o1tsegjuq3stp9q12gwja4', '.eJxVjDsOwjAQBe_iGln-fyjpOYPltXdxADlSnFSIu0OkFNC-mXkvlvK2trQNXNJU2ZlJdvrdIJcH9h3Ue-63mZe5r8sEfFf4QQe_zhWfl8P9O2h5tG8tQEqNxVarYnbkQQUhonemRq8wSIE6aGcIfQEStihFULMlQdpbpwx7fwDOZTdy:1oy7FV:yLQP4qSVUYbtvVKqZ1VcR9IHLiY7FHtsHAVZCwDFNwo', '2022-12-08 08:06:21.462952'),
 ('x6djgr4q114yo9zza4cl1rj12d0bkxls', '.eJxVjL0OwiAURt-FuSFAC7Qd1cVBY-IDNBe4tNUKSX9cjO8ujR10Pef7zos0sMxds0w4Nr0jNeEk-2UG7B3DKtwNQhupjWEee0PXCd3sRE_R4bDbtn-BDqYuvZnhPEcrnRQVKK-NKBmrtCpcpQWWnGFe5qrwqK3xTFohvHEgPfO5lkoUKbofegzz8UBqwTNyXh6Yuld4QnKXEcMX7GLrIJD3BzzFRY4:1pAX0b:SalcQNoi7Zmbo6wmIlltUfyRu17gDBipY4fYLpY-Y1s', '2023-01-11 14:02:17.538939');
@@ -767,19 +773,19 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT for table `cosmetics_adrese`
 --
 ALTER TABLE `cosmetics_adrese`
-  MODIFY `AdresaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `AdresaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_clienti`
 --
 ALTER TABLE `cosmetics_clienti`
-  MODIFY `ClientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `ClientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_comenzi`
 --
 ALTER TABLE `cosmetics_comenzi`
-  MODIFY `ComandaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ComandaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_pozeproduse`
@@ -797,19 +803,19 @@ ALTER TABLE `cosmetics_produse`
 -- AUTO_INCREMENT for table `cosmetics_produsecomandate`
 --
 ALTER TABLE `cosmetics_produsecomandate`
-  MODIFY `ProdusComandatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ProdusComandatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_produseincos`
 --
 ALTER TABLE `cosmetics_produseincos`
-  MODIFY `ProdusInCosID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `ProdusInCosID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `cosmetics_reviews`
 --
 ALTER TABLE `cosmetics_reviews`
-  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `django_admin_log`
