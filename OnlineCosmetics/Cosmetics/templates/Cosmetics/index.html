@@ -2,13 +2,15 @@
 
 {% block content %}
 <body>
-	<h6 style="color: white;">Sunt {{ numarProdusePozeVSNrComenzi }} produse care au mai mult de o poza si au fost comandate mai mult de o data</h6>
-	<h6 style="color: white;">Sunt {{ numarProduseMedieVSNrReview }} produse ce au o nota medie mai mare de 5 si mai mult de 2 review-uri</h6>
-	<h6 style="color: white;">Clientii care au adaugat cel putin un review la cel putin un produs pe care l-au si comandat sunt:
-		{% for client in clientii %}
-			<spane style="color: wheat;">{{ client.0 }} {{ client.1 }}, </spane>
-		{% endfor %}
-	</h6>
+	<div style="margin-left: 50px; margin-top: 50px;">
+		<h6 style="color: white;">Sunt {{ numarProdusePozeVSNrComenzi }} produse care au mai mult de o poza si au fost comandate mai mult de o data</h6>
+		<h6 style="color: white;">Sunt {{ numarProduseMedieVSNrReview }} produse ce au o nota medie mai mare de 5 si mai mult de 2 review-uri</h6>
+		<h6 style="color: white;">Clientii care au adaugat cel putin un review la cel putin un produs pe care l-au si comandat sunt:
+			{% for client in clientii %}
+				<spane style="color: wheat;">{{ client.0 }} {{ client.1 }}, </spane>
+			{% endfor %}
+		</h6>
+	</div>
 	<div class="container-fluid row row-cols-6 row-cols-md g-5 d-flex" id="carduri">
 	</div>
 </body>

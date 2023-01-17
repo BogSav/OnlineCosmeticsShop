@@ -38,7 +38,7 @@ $card-color: white;
 @import "../../bootstrap-5.0.2/scss/bootstrap";
 
 body {
-    @include scrollbars(10px, $card-border-color, black);
+    @include scrollbars(10px, $card-border-color, white);
   }
 
 #carduri{

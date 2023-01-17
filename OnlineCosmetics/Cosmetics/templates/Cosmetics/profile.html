@@ -38,6 +38,36 @@
             </div>
         </div>>
     {% endif %}
+
+    <form id="chestie" style="width: 300px;">
+        <div class="mb-3">
+            <label for="codPostal" class="form-label">CodPostal</label>
+            <input type="text" class="form-control" id="codPostal" required maxlength=50>
+        </div>
+        <button type="submit" class="btn btn-primary">Schimba codul postal al adresei active</button>
+    </form>
 </body>
+
+<script>
+    $(document).ready(function(){
+        $( "#chestie" ).submit(function( event ) {
+            event.preventDefault();
+            $.ajax({
+                url: "{% url 'schimbaCodPostalPOST' %}",
+                type: "POST",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'codPostal': $("#codPostal").val(),
+                },
+                success: function (data) {
+                    alert(data.succes);
+                },
+                error: function(data) {
+                    alert(data);
+                }
+            })
+        });
+    });
+</script>
 
 {% endblock content %}

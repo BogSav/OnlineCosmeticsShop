@@ -225,3 +225,22 @@ def adaugaReviewPOST(request):
             cursor.close()
 
     return JsonResponse({'resultText' : "Review-ul a fost adaugat cu succes", 'succes' : succes})
+
+def schimbaCodPostalPOST(request):
+    if not is_ajax(request):
+        raise Http404()
+
+    ClientID = request.session['ClientID']
+    codPostal = request.POST['codPostal']
+
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute(f"UPDATE cosmetics_adrese SET CodPostal = '{codPostal}' WHERE AdresaID = (SELECT AdresaID FROM cosmetics_clienti WHERE ClientID = {ClientID})")
+
+            succes = "Codul postal a fost modificat cu succes"
+        except Exception as e:
+            raise Http404(str(e))
+        finally:
+            cursor.close()
+
+    return JsonResponse({'succes' : succes})

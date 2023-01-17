@@ -128,7 +128,7 @@ def profile(request):
 
 def produs(request):
     produsID = request.GET['ProdusID']
-    ClientID = request.session['ClientID']
+    ClientID = request.session.get('ClientID', None)
 
     with connection.cursor() as cursor:
         try:
@@ -145,10 +145,13 @@ def produs(request):
                     f"WHERE ProdusID = {produsID}")
             reviews = cursor.fetchall()
 
-            cursor.execute("SELECT SUM(cosmetics_produsecomandate.Cantitate) FROM cosmetics_comenzi "
-                    "INNER JOIN cosmetics_produsecomandate ON (cosmetics_comenzi.ComandaID = cosmetics_produsecomandate.ComandaID) "
-                    f"WHERE cosmetics_comenzi.ClientID = {ClientID} AND cosmetics_produsecomandate.ProdusID = {produsID}")
-            sumatotala = cursor.fetchone()[0]
+            if ClientID != None:
+                cursor.execute("SELECT SUM(cosmetics_produsecomandate.Cantitate) FROM cosmetics_comenzi "
+                        "INNER JOIN cosmetics_produsecomandate ON (cosmetics_comenzi.ComandaID = cosmetics_produsecomandate.ComandaID) "
+                        f"WHERE cosmetics_comenzi.ClientID = {ClientID} AND cosmetics_produsecomandate.ProdusID = {produsID}")
+                sumatotala = cursor.fetchone()[0]
+            else:
+                sumatotala = 0
 
             cursor.execute("SELECT COUNT(*) FROM cosmetics_comenzi "
                     "INNER JOIN cosmetics_produsecomandate ON cosmetics_produsecomandate.ComandaID = cosmetics_comenzi.ComandaID "

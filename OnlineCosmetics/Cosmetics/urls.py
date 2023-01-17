@@ -21,5 +21,6 @@ urlpatterns = [
     path('adaugaProdusPOST', postRequests.adaugaProdusPOST, name='adaugaProdusPOST'),
     path('modificaCantitatePOST', postRequests.modificaCantitatePOST, name='modificaCantitatePOST'),
     path('plaseazaComandaPOST', postRequests.plaseazaComandaPOST, name='plaseazaComandaPOST'),
-    path('adaugaReviewPOST', postRequests.adaugaReviewPOST, name='adaugaReviewPOST')
+    path('adaugaReviewPOST', postRequests.adaugaReviewPOST, name='adaugaReviewPOST'),
+    path('schimbaCodPostalPOST', postRequests.schimbaCodPostalPOST, name='schimbaCodPostalPOST')
 ]
